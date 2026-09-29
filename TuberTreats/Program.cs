@@ -169,7 +169,7 @@ app.MapPost("/api/tuberorders", (TuberOrder tuberOrder) =>
 {
     tuberOrder.Id = orders.Max(o => o.Id) + 1;
     tuberOrder.OrderPlacedOnDate = DateTime.Now;
-    
+
     if (tuberOrder.Toppings == null)
     {
         tuberOrder.Toppings = new List<Topping>();
@@ -307,6 +307,10 @@ app.MapDelete("/api/tubertoppings/{id}", (int id) =>
     }
 
     Topping topping = toppings.FirstOrDefault(t => t.Id == tuberTopping.ToppingId);
+    if (topping == null)
+    {
+        return Results.BadRequest();
+    }
 
     tuberOrderToUpdate.Toppings.Remove(topping);
 
